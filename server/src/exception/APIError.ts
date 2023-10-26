@@ -14,15 +14,7 @@ export class APIError extends Error {
     this.errors = errors;
   }
 
-  static BadRequest(message: string) {
-    return new APIError(message, 400);
-  }
-
   static Validation(errors: ValidationError[]) {
     return new APIError("Помилка валідації", 400, errors);
-  }
-
-  static NotFound(message: string) {
-    return new APIError(message, 404);
   }
 }

@@ -1,30 +1,33 @@
 import express from "express";
-// import algorithmStepsController from "../controllers/algorithm-steps.js";
 import randomController from "../controllers/random.js";
 import {
-  validateCount,
-  validateHex,
-  validateLimit,
-} from "../validators/query/index.js";
+  ansix917ValidationRules,
+  bbsValidationRules,
+  fips186ValidationRules,
+} from "../validation/rules.js";
+import validate from "../middlewares/validate.js";
 
 const router = express.Router();
 
-// router.get("/steps/:algorithm", algorithmStepsController.getSteps);
-
 router.get(
   "/random/fips186",
-  validateCount,
-  validateLimit,
+  fips186ValidationRules,
+  validate,
   randomController.getFips186Random
 );
 
 router.get(
   "/random/ansix917",
-  validateCount,
-  validateLimit,
-  validateHex("seed"),
-  validateHex("key"),
+  ansix917ValidationRules,
+  validate,
   randomController.getAnsix917Random
+);
+
+router.get(
+  "/random/bbs",
+  bbsValidationRules,
+  validate,
+  randomController.getBBSRandom
 );
 
 export default router;

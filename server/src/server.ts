@@ -1,7 +1,7 @@
 import express, { Application } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import handleException from "./middlewares/exception-middleware.js";
+import handleException from "./middlewares/exception.js";
 import router from "./router/index.js";
 
 const app: Application = express();

@@ -13,3 +13,11 @@ export type Ansix917QueryParams = {
   seed: string;
   key: string;
 };
+
+export type Ansix917Request = Request<{}, {}, {}, Ansix917QueryParams>;
+
+export type BBSQueryParams = {
+  count: number;
+};
+
+export type BBSRequest = Request<{}, {}, {}, BBSQueryParams>;

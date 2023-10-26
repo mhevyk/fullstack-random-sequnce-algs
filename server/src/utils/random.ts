@@ -1,37 +1,43 @@
 import crypto from "crypto";
 import bigInt from "big-integer";
 
-type IntConfig = {
-  min: number;
-  max: number;
+export const Random = {
+  Int: {
+    Range: (min: number, max: number) => {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    },
+  },
+  Bit: () => {
+    return Random.Int.Range(0, 1);
+  },
+  Hex: {
+    Bits: (bits: number) => {
+      const bytes = Math.floor(bits / 8);
+      const buffer = crypto.randomBytes(bytes);
+      return buffer.toString("hex");
+    },
+  },
+  BigInt: {
+    Bits: (bits: number) => {
+      return bigInt(Random.Hex.Bits(bits), 16);
+    },
+    Range: (
+      min: number | bigInt.BigInteger,
+      max: number | bigInt.BigInteger
+    ) => {
+      const bigMin = bigInt.isInstance(min) ? min : bigInt(min);
+      const bigMax = bigInt.isInstance(max) ? max : bigInt(max);
+
+      if (bigMin.compare(bigMax) > 0) {
+        throw new Error(
+          "Invalid range. min must be less than or equal to max."
+        );
+      }
+
+      const rangeSize = bigMax.minus(bigMin);
+      const randomOffset = bigInt.randBetween(bigInt.zero, rangeSize);
+
+      return bigMin.plus(randomOffset);
+    },
+  },
 };
-
-type HexConfig = {
-  bits: number;
-};
-
-type BigIntConfig = {
-  bits: number;
-};
-
-export class Random {
-  static Int({ min, max }: IntConfig) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-
-  static Bit() {
-    return Random.Int({ min: 0, max: 1 });
-  }
-
-  static Hex({ bits }: HexConfig) {
-    const bytes = Math.floor(bits / 8);
-    const buffer = crypto.randomBytes(bytes);
-    return buffer.toString("hex");
-  }
-
-  static BigInt({ bits }: BigIntConfig) {
-    return bigInt(Random.Hex({ bits }), 16);
-  }
-}
