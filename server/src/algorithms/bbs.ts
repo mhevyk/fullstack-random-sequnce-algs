@@ -1,8 +1,8 @@
-import bigInt from "big-integer";
 import { Random } from "../utils/random.js";
 import { toRemainder } from "../utils/toRemainder.js";
 import { findClosestPrime } from "../utils/isPrime.js";
 import { getLeastSignificantBit } from "../utils/getLeastSignificantBit.js";
+import { Bit } from "../types/index.js";
 
 export function bbs(generatedWordsCount: number) {
   const p = toRemainder({
@@ -23,7 +23,7 @@ export function bbs(generatedWordsCount: number) {
 
   let u = s.pow(2).mod(N);
 
-  const sequence: bigInt.BigInteger[] = [];
+  const sequence: Bit[] = [];
 
   for (let i = 0; i < generatedWordsCount; i++) {
     u = u.pow(2).mod(N);

@@ -12,8 +12,8 @@ class RandomService {
     return fips186(count, limit);
   }
 
-  getAnsix917Random({ count, seed, key, limit }: Ansix917QueryParams) {
-    return ansix917(seed, key, count, limit);
+  getAnsix917Random({ count, seed, key }: Ansix917QueryParams) {
+    return ansix917(seed, key, count);
   }
 
   getBBSRandom({ count }: BBSQueryParams) {

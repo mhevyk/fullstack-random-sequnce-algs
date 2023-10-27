@@ -3,6 +3,7 @@ import randomController from "../controllers/random.js";
 import {
   ansix917ValidationRules,
   bbsValidationRules,
+  bigIntValidationRules,
   fips186ValidationRules,
 } from "../validation/rules.js";
 import validate from "../middlewares/validate.js";
@@ -28,6 +29,13 @@ router.get(
   bbsValidationRules,
   validate,
   randomController.getBBSRandom
+);
+
+router.get(
+  "/random/bigint",
+  bigIntValidationRules,
+  validate,
+  randomController.getRandomBigInt
 );
 
 export default router;
