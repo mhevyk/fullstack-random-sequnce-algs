@@ -1,0 +1,37 @@
+:root {
+  --bit-color: var(--bs-gray-700);
+}
+
+.inner-gap-sm > * {
+  display: block;
+}
+
+.inner-gap-md > *:not(:last-child) {
+  margin-bottom: 1em;
+}
+
+.inner-gap-sm > *:not(:last-child) {
+  margin-bottom: 0.4em;
+}
+
+.bit {
+  --bit-size: 35px;
+  flex: 0 0 var(--bit-size);
+  height: var(--bit-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 7px;
+}
+
+.bit.bit-0 {
+  border-color: var(--bit-color);
+  color: var(--bit-color);
+}
+
+.bit.bit-1 {
+  background-color: var(--bit-color);
+  color: white;
+}
