@@ -4,10 +4,10 @@ import { query } from "express-validator";
 const rules = {
   count: query(
     "count",
-    "Значення count має бути цілим числом у межах [0, 10000]"
+    "Значення count має бути цілим числом у межах [1, 50000]"
   )
     .optional()
-    .isInt({ min: 0, max: 10000 }),
+    .isInt({ min: 1, max: 50000 }),
   limit: query("limit", "Значення limit має бути більшим за 1")
     .optional()
     .custom(value => bigInt(value).greater(1)),
