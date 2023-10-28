@@ -1,34 +1,48 @@
 import bigInt from "big-integer";
 import { query } from "express-validator";
+import { countBitsInBigInt } from "../utils/countBitsInBigInt.js";
 
-const rules = {
-  count: query(
-    "count",
-    "Значення count має бути цілим числом у межах [1, 50000]"
-  )
-    .optional()
-    .isInt({ min: 1, max: 50000 }),
-  limit: query("limit", "Значення limit має бути більшим за 1")
-    .optional()
-    .custom(value => bigInt(value).greater(1)),
-  bits: query(
-    "bits",
-    "Значення кількості біт має бути у межах [8, 1000] та бути кратним 8"
-  )
-    .isInt({
-      min: 2,
-      max: 1000,
-    })
-    .custom(value => value % 8 === 0),
-  hex: (field: string) => query(field).optional().isHexadecimal(),
-};
+const countRule = query(
+  "count",
+  "Значення count має бути цілим числом у межах [1, 50000]"
+)
+  .optional()
+  .isInt({ min: 1, max: 50000 });
 
-export const fips186ValidationRules = [rules.count, rules.limit];
-export const ansix917ValidationRules = [
-  rules.count,
-  rules.hex("seed"),
-  rules.hex("key"),
+const nonNegativeIntRule = (field: string) =>
+  query(field, `Значення ${field} має бути невід'ємним цілим числом`).isInt({
+    min: 0,
+  });
+
+const bigIntegerByBitsRule = (field: string, bits: number) =>
+  query(field, `Значення поля ${field} має бути ${bits}-бітовим числом`).custom(
+    value => {
+      const bigValue = bigInt(value);
+      return countBitsInBigInt(bigValue) === bits;
+    }
+  );
+
+const exactBitsToBytesRule = query(
+  "bits",
+  "Значення кількості біт має бути у межах [8, 1000] та бути кратним 8"
+)
+  .isInt({
+    min: 2,
+    max: 1000,
+  })
+  .custom(value => value % 8 === 0);
+
+export const fips186ValidationRules = [
+  countRule,
+  nonNegativeIntRule("limit"),
+  bigIntegerByBitsRule("limit", 160),
 ];
-export const bbsValidationRules = [rules.count];
-// TODO: fix duplicate error
-export const bigIntValidationRules = [rules.bits];
+
+export const ansix917ValidationRules = [
+  countRule,
+  bigIntegerByBitsRule("seed", 64),
+  bigIntegerByBitsRule("key", 128),
+];
+
+export const bbsValidationRules = [countRule];
+export const bigIntValidationRules = [exactBitsToBytesRule];

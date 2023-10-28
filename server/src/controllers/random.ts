@@ -13,9 +13,7 @@ class RandomController {
 
   // TODO: handle count and other query params better
   getAnsix917Random(req: Ansix917Request, res: Response) {
-    const count = Number(req.query.count) || 1;
-    const seed = req.query.seed?.toString() || Random.Hex.Bits(64);
-    const key = req.query.key?.toString() || Random.Hex.Bits(192);
+    const { count, seed, key } = req.query;
 
     const randomNumbers = randomService.getAnsix917Random({
       count,
@@ -36,7 +34,7 @@ class RandomController {
 
   getRandomBigInt(req: Request, res: Response) {
     const bits = req.query.bits;
-    const bigInteger = Random.BigInt.Bits(bits as any);
+    const bigInteger = Random.BigInt.Bits(Number(bits));
     res.json({ value: bigInteger });
   }
 }

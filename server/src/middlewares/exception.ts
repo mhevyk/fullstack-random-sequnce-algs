@@ -19,5 +19,7 @@ export default function handleException(
 
   console.log(err);
 
-  return res.status(500).json({ message: "Непередбачувана помилка" });
+  return res
+    .status(500)
+    .json({ message: "Непередбачувана помилка", status: 500 });
 }

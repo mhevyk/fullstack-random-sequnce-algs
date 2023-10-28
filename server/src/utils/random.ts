@@ -10,16 +10,12 @@ export const Random = {
   Bit: () => {
     return Random.Int.Range(0, 1);
   },
-  Hex: {
-    Bits: (bits: number) => {
-      const bytes = Math.floor(bits / 8);
-      const buffer = crypto.randomBytes(bytes);
-      return buffer.toString("hex");
-    },
-  },
   BigInt: {
     Bits: (bits: number) => {
-      return bigInt(Random.Hex.Bits(bits), 16);
+      const min = bigInt(1).shiftLeft(bits - 1);
+      const max = bigInt(1).shiftLeft(bits).subtract(1);
+      const randomBigInt = bigInt.randBetween(min, max);
+      return randomBigInt;
     },
     Range: (
       min: number | bigInt.BigInteger,
