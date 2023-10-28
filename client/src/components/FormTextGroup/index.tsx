@@ -1,8 +1,8 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 import { Form } from "react-bootstrap";
 
 type FormTextGroupProps = PropsWithChildren & {
-  label: string;
+  label: ReactNode;
 };
 
 export function FormTextGroup({ label, children }: FormTextGroupProps) {

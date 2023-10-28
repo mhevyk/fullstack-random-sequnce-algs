@@ -5,6 +5,7 @@ import {
   StatisticTests,
   Section,
   RandomBigIntegerInput,
+  MathText,
 } from "../../components";
 import { useRandomSequenceQuery } from "../../hooks/useRandomSequenceQuery";
 import { useState } from "react";
@@ -29,20 +30,32 @@ export function Fips186() {
 
   return (
     <>
-      <Section title="Генерація псевдовипадкової послідовності">
+      <Section title="FIPS-186">
         <Form className="inner-gap-md">
-          <FormTextGroup label="Кількість згенерованих чисел (m)">
+          <FormTextGroup
+            label={
+              <>
+                Кількість згенерованих чисел <MathText>m</MathText>
+              </>
+            }
+          >
             <Form.Control
               type="number"
-              placeholder="Введіть параметр m..."
+              placeholder="Введіть кількість згенерованих чисел..."
               value={count}
               onChange={e => setCount(e.target.value)}
             />
           </FormTextGroup>
-          <FormTextGroup label="Сіль (q)">
+          <FormTextGroup
+            label={
+              <>
+                160-бітове просте число <MathText>q</MathText>
+              </>
+            }
+          >
             <RandomBigIntegerInput
               bits={160}
-              placeholder="Введіть параметр q..."
+              placeholder="Введіть 160-бітове просте число..."
               value={limit}
               setValue={setLimit}
             />

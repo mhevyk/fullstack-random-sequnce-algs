@@ -1,5 +1,5 @@
 import { Button, Form, FormControlProps, InputGroup } from "react-bootstrap";
-import { useEffect } from "react";
+import { useEffect, useId } from "react";
 import { useRandomBigIntQuery } from "./hooks/useRandomBigIntQuery";
 
 type Props = FormControlProps & {
@@ -14,7 +14,8 @@ export function RandomBigIntegerInput({
   setValue,
   ...props
 }: Props) {
-  const { data, refetch } = useRandomBigIntQuery(bits);
+  const id = useId();
+  const { data, refetch } = useRandomBigIntQuery(bits, id);
 
   useEffect(() => {
     if (data?.value && data.value !== value) {
@@ -27,10 +28,11 @@ export function RandomBigIntegerInput({
       <Form.Control
         value={value}
         onChange={e => setValue(e.target.value)}
+        aria-describedby={id}
         {...props}
       />
-      <Button variant="outline-secondary" onClick={() => refetch()}>
-        Випадкове значення
+      <Button variant="outline-secondary" id={id} onClick={() => refetch()}>
+        Згенерувати
       </Button>
     </InputGroup>
   );
