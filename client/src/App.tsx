@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { Container, Tab, Tabs } from "react-bootstrap";
 import { Fips186 } from "./pages/Fips186";
 import { Ansix917 } from "./pages/Ansix917";
+import { BBS } from "./pages/BBS";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,9 @@ export function App() {
           </Tab>
           <Tab eventKey="ansix917" title="ANSI X9.17">
             <Ansix917 />
+          </Tab>
+          <Tab eventKey="bbs" title="BBS (Blum-Blum-Shub)">
+            <BBS />
           </Tab>
           {/* TODO: complete tabs */}
         </Tabs>
