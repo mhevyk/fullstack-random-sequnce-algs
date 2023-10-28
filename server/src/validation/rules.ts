@@ -6,7 +6,7 @@ const countRule = query(
   "count",
   "Значення count має бути цілим числом у межах [1, 50000]"
 )
-  .optional()
+  .default(1)
   .isInt({ min: 1, max: 50000 });
 
 const nonNegativeIntRule = (field: string) =>
@@ -14,13 +14,23 @@ const nonNegativeIntRule = (field: string) =>
     min: 0,
   });
 
-const bigIntegerByBitsRule = (field: string, bits: number) =>
-  query(field, `Значення поля ${field} має бути ${bits}-бітовим числом`).custom(
-    value => {
+type BigIntegerByBitsRule = {
+  field: string;
+  bits: number;
+  default?: string;
+};
+
+const bigIntegerByBitsRule = ({
+  field,
+  bits,
+  default: defaultValue,
+}: BigIntegerByBitsRule) =>
+  query(field, `Значення поля ${field} має бути ${bits}-бітовим числом`)
+    .default(defaultValue)
+    .custom(value => {
       const bigValue = bigInt(value);
       return countBitsInBigInt(bigValue) === bits;
-    }
-  );
+    });
 
 const exactBitsToBytesRule = query(
   "bits",
@@ -35,13 +45,25 @@ const exactBitsToBytesRule = query(
 export const fips186ValidationRules = [
   countRule,
   nonNegativeIntRule("limit"),
-  bigIntegerByBitsRule("limit", 160),
+  bigIntegerByBitsRule({
+    field: "limit",
+    bits: 160,
+    default: "1391605785169562015414196052258036110133116476015",
+  }),
 ];
 
 export const ansix917ValidationRules = [
   countRule,
-  bigIntegerByBitsRule("seed", 64),
-  bigIntegerByBitsRule("key", 128),
+  bigIntegerByBitsRule({
+    field: "seed",
+    bits: 64,
+    default: "12712645049748658104",
+  }),
+  bigIntegerByBitsRule({
+    field: "key",
+    bits: 128,
+    default: "253019564733276754055855694968778029229",
+  }),
 ];
 
 export const bbsValidationRules = [countRule];

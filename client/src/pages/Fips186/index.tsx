@@ -14,9 +14,7 @@ import { GetFips186RandomResponse } from "../../api/types";
 
 export function Fips186() {
   const [count, setCount] = useState("1");
-  const [limit, setLimit] = useState(
-    "1373051830727328531293517081251341408442730140535"
-  );
+  const [limit, setLimit] = useState("");
 
   const params = new URLSearchParams({
     count,
