@@ -7,6 +7,13 @@ export type GetFips186RandomResponse = {
   data: Bit[];
 };
 
+export type GetAnsix917Response = {
+  count: string;
+  seed: string;
+  key: string;
+  data: Bit[];
+};
+
 type ServerError = {
   message: string;
   status: string;
