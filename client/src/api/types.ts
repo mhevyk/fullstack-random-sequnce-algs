@@ -1,12 +1,16 @@
-export type Algorithm = "fips186";
+import { AxiosError } from "axios";
+import { Bit } from "../types";
 
-export type Step = {
-  description: string;
-  value?: number;
+export type GetFips186RandomResponse = {
+  count: string;
+  limit: string;
+  data: Bit[];
 };
 
-export type GetAlgorithmStepsResponse = {
-  totalPages: number;
-  page: number;
-  data: Step[];
+type ServerError = {
+  message: string;
+  status: string;
+  errors?: Pick<Error, "message">[];
 };
+
+export type APIError = AxiosError<ServerError>;
