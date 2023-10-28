@@ -1,0 +1,1 @@
+export const STATISTIC_LIMIT = 1.82138636;
