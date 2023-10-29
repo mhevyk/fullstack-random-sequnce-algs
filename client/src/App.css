@@ -26,12 +26,21 @@
   border-radius: 7px;
 }
 
-.bit.bit-0 {
+.bit.bit_0 {
   border-color: var(--bit-color);
   color: var(--bit-color);
 }
 
-.bit.bit-1 {
+.bit.bit_1 {
   background-color: var(--bit-color);
   color: white;
+}
+
+.accordion {
+  --bs-accordion-btn-padding-y: 10px;
+}
+
+.math-block {
+  font-size: 25px;
+  margin-top: 10px;
 }

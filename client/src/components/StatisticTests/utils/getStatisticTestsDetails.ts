@@ -3,6 +3,7 @@ import {
   consecutiveRepeatTest,
   frequencyTest,
 } from "../../../statistic-tests";
+import { Step } from "../../../statistic-tests/constants";
 import { Bit } from "../../../types";
 
 const tests = [
@@ -18,6 +19,7 @@ type TestResult = {
   name: string;
   passed: boolean;
   duration: number;
+  steps: Step[];
 };
 
 export function getStatisticTestsDetails(sequence: Bit[]) {
@@ -25,10 +27,10 @@ export function getStatisticTestsDetails(sequence: Bit[]) {
 
   for (const test of tests) {
     const timerStart = performance.now();
-    const passed = test.check(sequence);
+    const { passed, steps } = test.check(sequence);
     const timerEnd = performance.now();
     const duration = timerEnd - timerStart;
-    testDetails.push({ name: test.name, passed, duration });
+    testDetails.push({ name: test.name, passed, duration, steps });
   }
 
   return testDetails;

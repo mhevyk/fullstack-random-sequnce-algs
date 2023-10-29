@@ -1,7 +1,9 @@
 import { Bit } from "../types";
-import { STATISTIC_LIMIT } from "./constants";
+import { STATISTIC_LIMIT, Step } from "./constants";
 
 export function consecutiveRepeatTest(sequence: Bit[]) {
+  const steps: Step[] = [];
+
   const n = sequence.length;
   let sum = 0;
   for (const bit of sequence) {
@@ -10,15 +12,41 @@ export function consecutiveRepeatTest(sequence: Bit[]) {
 
   const pi = (1 / n) * sum;
 
+  steps.push({
+    description: `Обчислюємо частоту, з якою у послідовності зустрічаються одиниці за формулою \\pi=\\frac{1}{n} *\\sum_{j=1}^{n}\\varepsilon_j`,
+    value: pi,
+  });
+
   let V = 1;
 
   for (let i = 0; i < sequence.length - 1; i++) {
     V += sequence[i] === sequence[i + 1] ? 0 : 1;
   }
 
+  steps.push({
+    description: `Обчислюємо значення V_n=1+\\sum r(k), де r(k)=0, якщо \\varepsilon_k=\\varepsilon_{k+1} і r(k)=1 інакше`,
+    value: V,
+  });
+
   const statistic =
     Math.abs(V - 2 * n * pi * (1 - pi)) /
     (2 * Math.sqrt(2 * n) * pi * (1 - pi));
 
-  return statistic <= STATISTIC_LIMIT;
+  steps.push({
+    description:
+      "Обчислимо статистику за формулою S = \\frac{|V_n-2*n*\\pi*(1-\\pi)|}{2*\\sqrt{2n}*\\pi*(1-\\pi)}",
+    value: statistic,
+  });
+
+  const passed = statistic <= STATISTIC_LIMIT;
+
+  steps.push({
+    description: `Виконаємо перевірку S\\leq ${STATISTIC_LIMIT}`,
+    value: passed ? "Так" : "Ні",
+  });
+
+  return {
+    steps,
+    passed,
+  };
 }
