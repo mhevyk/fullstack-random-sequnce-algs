@@ -5,7 +5,7 @@ import { getLeastSignificantBit } from "../utils/getLeastSignificantBit.js";
 import { Bit } from "../types/index.js";
 
 // limit: max number to generate not inclusive
-export function fips186(generatedWordsCount: number, limit: number) {
+export function fips186(generatedWordsCount: number, limit: string) {
   const b = Random.Int.Range(160, 512);
   let s = Random.BigInt.Bits(b);
   const t = "67452301efcdab8998badcfe10325476c3d2e1f0";

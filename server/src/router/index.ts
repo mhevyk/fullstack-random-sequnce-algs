@@ -5,7 +5,7 @@ import {
   bbsValidationRules,
   bigIntValidationRules,
   fips186ValidationRules,
-} from "../validation/rules.js";
+} from "../validation/index.js";
 import validate from "../middlewares/validate.js";
 
 const router = express.Router();

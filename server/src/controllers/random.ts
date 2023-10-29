@@ -4,9 +4,13 @@ import { Random } from "../utils/random.js";
 import { Ansix917Request, BBSRequest, Fips186Request } from "../types/index.js";
 
 class RandomController {
+  // TODO: fix types and make sure they cast expectable
   getFips186Random(req: Fips186Request, res: Response) {
     const { count, limit } = req.query;
-    const randomNumbers = randomService.getFips186Random({ count, limit });
+    const randomNumbers = randomService.getFips186Random({
+      count: Number(count),
+      limit,
+    });
 
     res.json({ count, limit, data: randomNumbers });
   }
@@ -16,7 +20,7 @@ class RandomController {
     const { count, seed, key } = req.query;
 
     const randomNumbers = randomService.getAnsix917Random({
-      count,
+      count: Number(count),
       seed,
       key,
     });
@@ -25,9 +29,9 @@ class RandomController {
   }
 
   getBBSRandom(req: BBSRequest, res: Response) {
-    const count = Number(req.query.count) || 1;
+    const { count } = req.query;
 
-    const randomNumbers = randomService.getBBSRandom({ count });
+    const randomNumbers = randomService.getBBSRandom({ count: Number(count) });
 
     res.json({ count, data: randomNumbers });
   }
