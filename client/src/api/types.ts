@@ -2,16 +2,20 @@ import { AxiosError } from "axios";
 import { Bit } from "../types";
 
 export type GetFips186RandomResponse = {
-  count: string;
+  count: number;
   limit: string;
   data: Bit[];
 };
 
 export type GetAnsix917Response = {
-  count: string;
+  count: number;
   seed: string;
   key: string;
   data: Bit[];
+};
+
+export type GetBBSResponse = {
+  count: number;
 };
 
 type ServerError = {
