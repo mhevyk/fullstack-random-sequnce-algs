@@ -4,3 +4,4 @@ export * from "./StatisticTests";
 export * from "./Section";
 export * from "./RandomBigIntegerInput";
 export * from "./MathText";
+export * from "./BitList";

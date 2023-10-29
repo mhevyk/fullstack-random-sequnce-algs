@@ -6,10 +6,10 @@ import {
   MathText,
   Section,
   StatisticTests,
+  BitList,
 } from "../../components";
 import { useRandomSequenceQuery } from "../../hooks/useRandomSequenceQuery";
 import { useState } from "react";
-import { renderBitList } from "../../utils/renderBitList";
 
 export function BBS() {
   const [count, setCount] = useState("1");
@@ -22,6 +22,9 @@ export function BBS() {
     "bbs",
     params
   );
+
+  const sequence = randomSequenceQuery.data?.data || [];
+
   return (
     <>
       <Section title="BBS (Blum-Blum-Shub)">
@@ -43,13 +46,16 @@ export function BBS() {
           <Button onClick={() => randomSequenceQuery.refetch()}>
             Згенерувати послідовність
           </Button>
-          <Feedback on={randomSequenceQuery} renderData={renderBitList} />
+          <Feedback
+            on={randomSequenceQuery}
+            content={<BitList data={sequence} />}
+          />
         </Form>
       </Section>
       {randomSequenceQuery.data && (
         <StatisticTests
           isLoading={randomSequenceQuery.isFetching}
-          sequence={randomSequenceQuery.data?.data}
+          sequence={sequence}
         />
       )}
     </>

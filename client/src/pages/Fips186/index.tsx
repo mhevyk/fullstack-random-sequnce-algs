@@ -6,10 +6,10 @@ import {
   Section,
   RandomBigIntegerInput,
   MathText,
+  BitList,
 } from "../../components";
 import { useRandomSequenceQuery } from "../../hooks/useRandomSequenceQuery";
 import { useState } from "react";
-import { renderBitList } from "../../utils/renderBitList";
 import { GetFips186RandomResponse } from "../../api/types";
 
 export function Fips186() {
@@ -25,6 +25,8 @@ export function Fips186() {
     "fips186",
     params
   );
+
+  const sequence = randomSequenceQuery.data?.data || [];
 
   return (
     <>
@@ -61,13 +63,16 @@ export function Fips186() {
           <Button onClick={() => randomSequenceQuery.refetch()}>
             Згенерувати послідовність
           </Button>
-          <Feedback on={randomSequenceQuery} renderData={renderBitList} />
+          <Feedback
+            on={randomSequenceQuery}
+            content={<BitList data={sequence} />}
+          />
         </Form>
       </Section>
       {randomSequenceQuery.data && (
         <StatisticTests
           isLoading={randomSequenceQuery.isFetching}
-          sequence={randomSequenceQuery.data?.data}
+          sequence={sequence}
         />
       )}
     </>

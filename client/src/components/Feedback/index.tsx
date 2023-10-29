@@ -3,10 +3,10 @@ import { Alert, Spinner } from "react-bootstrap";
 import { UseBaseQueryResult } from "react-query";
 import { APIError } from "../../api/types";
 
-type FeedbackProps<TResult extends UseBaseQueryResult<any, APIError>, TData> = {
+type FeedbackProps<TResult extends UseBaseQueryResult<any, APIError>> = {
   on: TResult;
   label?: string;
-  renderData: (data: TData) => ReactNode;
+  content: ReactNode;
 };
 
 type ErrorLayputProps = {
@@ -28,11 +28,12 @@ function ErrorLayout({ error }: ErrorLayputProps) {
   );
 }
 
-export function Feedback<
-  TResult extends UseBaseQueryResult<any, APIError>,
-  TData
->({ on, label, renderData }: FeedbackProps<TResult, TData>) {
-  const { isFetching, isSuccess, isError, data, error } = on;
+export function Feedback<TResult extends UseBaseQueryResult<any, APIError>>({
+  on,
+  label,
+  content,
+}: FeedbackProps<TResult>) {
+  const { isFetching, isSuccess, isError, error } = on;
   let variant = null;
 
   if (isFetching) {
@@ -51,7 +52,7 @@ export function Feedback<
         ) : (
           <>
             {label && <h6 className="alert-heading">{label}</h6>}
-            {isSuccess && renderData(data)}
+            {isSuccess && content}
             {isError && <ErrorLayout error={error} />}
           </>
         )}
