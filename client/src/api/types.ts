@@ -16,6 +16,7 @@ export type GetAnsix917Response = {
 
 export type GetBBSResponse = {
   count: number;
+  data: Bit[];
 };
 
 type ServerError = {
