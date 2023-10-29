@@ -26,7 +26,7 @@ export function Fips186() {
     params
   );
 
-  const sequence = randomSequenceQuery.data?.data || [];
+  const sequence = randomSequenceQuery.data?.data;
 
   return (
     <>
@@ -65,11 +65,11 @@ export function Fips186() {
           </Button>
           <Feedback
             on={randomSequenceQuery}
-            content={<BitList data={sequence} />}
+            content={<BitList data={sequence || []} />}
           />
         </Form>
       </Section>
-      {randomSequenceQuery.data && (
+      {sequence && !randomSequenceQuery.isError && (
         <StatisticTests
           isLoading={randomSequenceQuery.isFetching}
           sequence={sequence}

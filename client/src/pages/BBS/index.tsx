@@ -52,7 +52,7 @@ export function BBS() {
           />
         </Form>
       </Section>
-      {randomSequenceQuery.data && (
+      {randomSequenceQuery.data && !randomSequenceQuery.isError && (
         <StatisticTests
           isLoading={randomSequenceQuery.isFetching}
           sequence={sequence}
