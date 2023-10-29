@@ -7,9 +7,9 @@ import {
   RandomBigIntegerInput,
   Section,
   StatisticTests,
+  BitList,
 } from "../../components";
 import { useRandomSequenceQuery } from "../../hooks/useRandomSequenceQuery";
-import { renderBitList } from "../../utils/renderBitList";
 import { useState } from "react";
 
 export function Ansix917() {
@@ -27,6 +27,8 @@ export function Ansix917() {
     "ansix917",
     params
   );
+
+  const sequence = randomSequenceQuery.data?.data || [];
 
   return (
     <>
@@ -80,13 +82,16 @@ export function Ansix917() {
           <Button onClick={() => randomSequenceQuery.refetch()}>
             Згенерувати послідовність
           </Button>
-          <Feedback on={randomSequenceQuery} renderData={renderBitList} />
+          <Feedback
+            on={randomSequenceQuery}
+            content={<BitList data={sequence} />}
+          />
         </Form>
       </Section>
       {randomSequenceQuery.data && (
         <StatisticTests
           isLoading={randomSequenceQuery.isFetching}
-          sequence={randomSequenceQuery.data?.data}
+          sequence={sequence}
         />
       )}
     </>
