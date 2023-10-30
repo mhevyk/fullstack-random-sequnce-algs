@@ -15,9 +15,6 @@
 }
 
 .bit {
-  --bit-size: 35px;
-  flex: 0 0 var(--bit-size);
-  height: var(--bit-size);
   display: flex;
   align-items: center;
   justify-content: center;
