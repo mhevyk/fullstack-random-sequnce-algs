@@ -2,41 +2,34 @@ import { Fragment, ReactNode } from "react";
 import { MathText } from "../..";
 
 export function renderHighlightedFormulas(text: string) {
-  const regex = /(,? ?\p{sc=Cyrillic} ?)+/giu;
+  const regex = /(,? ?\p{sc=Cyrillic},? ?)+/giu; // Updated regex to match Cyrillic characters only
 
   const matches = [...text.matchAll(regex)];
   const nodes: ReactNode[] = [];
 
+  let currentIndex = 0; // Track the current index within the text
+
   for (let i = 0; i < matches.length; i++) {
     const match = matches[i];
-    const cyryllicText = match[0];
-    const currentMatchIndex = match.index;
-    const nextMatchIndex = matches[i + 1]?.index;
+    const cyrillicText = match[0];
 
-    if (i === 0 && currentMatchIndex !== undefined && 0 < currentMatchIndex) {
-      const beforeFirstMatch = text.slice(0, currentMatchIndex);
-      nodes.push(<MathText key={`${i}-before`}>{beforeFirstMatch}</MathText>);
+    // Check if there is non-matching text between this match and the previous one
+    if (match.index! > currentIndex) {
+      const nonMatchingText = text.slice(currentIndex, match.index);
+      nodes.push(<MathText key={`${i}-before`}>{nonMatchingText}</MathText>);
     }
 
-    nodes.push(<Fragment key={`${i}-cyryllic`}>{cyryllicText}</Fragment>);
+    nodes.push(<Fragment key={`${i}-cyrillic`}>{cyrillicText}</Fragment>);
 
-    if (nextMatchIndex) {
-      const betweenMatches = text.slice(
-        currentMatchIndex! + cyryllicText.length,
-        nextMatchIndex
-      );
-      nodes.push(<MathText key={`${i}-between`}>{betweenMatches}</MathText>);
-    }
+    currentIndex = match.index! + cyrillicText.length;
+  }
 
-    if (
-      i === matches.length - 1 &&
-      currentMatchIndex! + cyryllicText.length < text.length
-    ) {
-      const afterLastMatch = text.slice(
-        currentMatchIndex! + cyryllicText.length
-      );
-      nodes.push(<MathText key={`${i}-after`}>{afterLastMatch}</MathText>);
-    }
+  // Check if there is text after the last match
+  if (currentIndex < text.length) {
+    const afterLastMatch = text.slice(currentIndex);
+    nodes.push(
+      <MathText key={`${matches.length}-after`}>{afterLastMatch}</MathText>
+    );
   }
 
   return <span className="highlighted-formulas">{nodes}</span>;

@@ -4,7 +4,7 @@ import AutoSizer from "react-virtualized-auto-sizer";
 
 const SCROLLBAR_HEIGHT = 15;
 const GAP_X = 4;
-const GAP_Y = 16;
+const GAP_Y = 25;
 const ITEM_SIZE = 35;
 
 type BitListItemProps = {
