@@ -2,7 +2,7 @@ import { Fragment, ReactNode } from "react";
 import { MathText } from "../..";
 
 export function renderHighlightedFormulas(text: string) {
-  const regex = /\p{sc=Cyrillic}|[зу]{2,}/giu;
+  const regex = /(,? ?\p{sc=Cyrillic} ?)+/giu;
 
   const matches = [...text.matchAll(regex)];
   const nodes: ReactNode[] = [];
@@ -13,7 +13,7 @@ export function renderHighlightedFormulas(text: string) {
     const currentMatchIndex = match.index;
     const nextMatchIndex = matches[i + 1]?.index;
 
-    if (i === 0) {
+    if (i === 0 && currentMatchIndex !== undefined && 0 < currentMatchIndex) {
       const beforeFirstMatch = text.slice(0, currentMatchIndex);
       nodes.push(<MathText key={`${i}-before`}>{beforeFirstMatch}</MathText>);
     }
@@ -28,7 +28,10 @@ export function renderHighlightedFormulas(text: string) {
       nodes.push(<MathText key={`${i}-between`}>{betweenMatches}</MathText>);
     }
 
-    if (i === matches.length - 1) {
+    if (
+      i === matches.length - 1 &&
+      currentMatchIndex! + cyryllicText.length < text.length
+    ) {
       const afterLastMatch = text.slice(
         currentMatchIndex! + cyryllicText.length
       );
@@ -36,5 +39,5 @@ export function renderHighlightedFormulas(text: string) {
     }
   }
 
-  return nodes;
+  return <span className="highlighted-formulas">{nodes}</span>;
 }
