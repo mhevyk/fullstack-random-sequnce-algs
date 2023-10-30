@@ -2,9 +2,10 @@ import { Request, Response } from "express";
 import randomService from "../services/random.js";
 import { Random } from "../utils/random.js";
 import { Ansix917Request, BBSRequest, Fips186Request } from "../types/index.js";
+import { logRandomSequence } from "../utils/logRandomSequence.js";
 
 class RandomController {
-  getFips186Random(req: Fips186Request, res: Response) {
+  async getFips186Random(req: Fips186Request, res: Response) {
     const count = Number(req.query.count);
     const limit = req.query.limit;
 
@@ -13,10 +14,12 @@ class RandomController {
       limit,
     });
 
+    await logRandomSequence(randomNumbers);
+
     res.json({ count, limit, data: randomNumbers });
   }
 
-  getAnsix917Random(req: Ansix917Request, res: Response) {
+  async getAnsix917Random(req: Ansix917Request, res: Response) {
     const count = Number(req.query.count);
     const seed = req.query.seed;
     const key = req.query.key;
@@ -27,13 +30,17 @@ class RandomController {
       key,
     });
 
+    await logRandomSequence(randomNumbers);
+
     res.json({ count, seed, key, data: randomNumbers });
   }
 
-  getBBSRandom(req: BBSRequest, res: Response) {
+  async getBBSRandom(req: BBSRequest, res: Response) {
     const count = Number(req.query.count);
 
     const randomNumbers = randomService.getBBSRandom({ count });
+
+    await logRandomSequence(randomNumbers);
 
     res.json({ count, data: randomNumbers });
   }
