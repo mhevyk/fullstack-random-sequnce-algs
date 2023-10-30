@@ -2,7 +2,7 @@ import { Bit } from "../../types";
 import { Section, BitList } from "..";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { Accordion, Pagination, Spinner } from "react-bootstrap";
+import { Accordion, Pagination, Spinner, Table } from "react-bootstrap";
 import { memo } from "react";
 import { getStatisticTestsDetails } from "./utils/getStatisticTestsDetails";
 import { Step } from "../../statistic-tests/constants";
@@ -29,18 +29,46 @@ function AlgorithmSteps({ steps }: AlgorithmStepsProps) {
 
   return (
     <div>
-      <div className="pt-2" style={{ minHeight: 220 }}>
-        <div>
+      <div className="d-flex flex-column py-2" style={{ height: 300 }}>
+        <div className="mb-4">
           <strong>Крок {activeStep + 1}:</strong>{" "}
-          <span className="step-description">
-            {renderHighlightedFormulas(activeStepContent.description)}
-          </span>
+          {renderHighlightedFormulas(activeStepContent.description)}
         </div>
-        Результат:{" "}
-        {Array.isArray(activeStepContent.value) ? (
-          <BitList data={activeStepContent.value} />
-        ) : (
-          activeStepContent.value
+        {activeStepContent.value.type === "bitlist" && (
+          <BitList data={activeStepContent.value.data} />
+        )}
+        {activeStepContent.value.type === "value" && (
+          <>Результат: {activeStepContent.value.data}</>
+        )}
+        {activeStepContent.value.type === "table" && (
+          <div style={{ overflowY: "auto" }}>
+            <Table>
+              <thead>
+                <tr className="border-bottom border-primary">
+                  <th>
+                    {renderHighlightedFormulas(
+                      activeStepContent.value.data.labels[0]
+                    )}
+                  </th>
+                  <th>
+                    {renderHighlightedFormulas(
+                      activeStepContent.value.data.labels[1]
+                    )}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(activeStepContent.value.data.dataset).map(
+                  ([key, value]) => (
+                    <tr key={key}>
+                      <td>{key}</td>
+                      <td>{value}</td>
+                    </tr>
+                  )
+                )}
+              </tbody>
+            </Table>
+          </div>
         )}
       </div>
       <Pagination className="justify-content-center">

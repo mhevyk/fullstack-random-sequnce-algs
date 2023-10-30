@@ -15,13 +15,13 @@ export function frequencyTest(sequence: Bit[]) {
   steps.push({
     description:
       "Обчислимо послідовність за формулою X_i=2*\\varepsilon_i-1, де \\varepsilon_i - елемент вхідної послідовності",
-    value: xSequence,
+    value: { type: "bitlist", data: xSequence },
   });
 
   steps.push({
     description:
       "Обчислимо суму за формулою S_n=X_1+X_2+...+X_n, де n - кількість елементів, що перевіряється",
-    value: sum,
+    value: { type: "value", data: sum },
   });
 
   const statistic = Math.abs(sum) / Math.sqrt(sequence.length);
@@ -29,14 +29,14 @@ export function frequencyTest(sequence: Bit[]) {
   steps.push({
     description:
       "Обчислимо статистику за формулою S = \\frac{|S_n|}{\\sqrt{n}}",
-    value: statistic,
+    value: { type: "value", data: statistic },
   });
 
   const passed = statistic <= STATISTIC_LIMIT;
 
   steps.push({
     description: `Виконаємо перевірку S\\leq ${STATISTIC_LIMIT}`,
-    value: passed ? "Так" : "Ні",
+    value: { type: "value", data: passed ? "Так" : "Ні" },
   });
 
   return {

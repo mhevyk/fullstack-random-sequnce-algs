@@ -14,7 +14,7 @@ export function consecutiveRepeatTest(sequence: Bit[]) {
 
   steps.push({
     description: `Обчислюємо частоту, з якою у послідовності зустрічаються одиниці за формулою \\pi=\\frac{1}{n} *\\sum_{j=1}^{n}\\varepsilon_j`,
-    value: pi,
+    value: { type: "value", data: pi },
   });
 
   let V = 1;
@@ -25,7 +25,7 @@ export function consecutiveRepeatTest(sequence: Bit[]) {
 
   steps.push({
     description: `Обчислюємо значення V_n=1+\\sum r(k), де r(k)=0, якщо \\varepsilon_k=\\varepsilon_{k+1} і r(k)=1 інакше`,
-    value: V,
+    value: { type: "value", data: V },
   });
 
   const statistic =
@@ -35,14 +35,14 @@ export function consecutiveRepeatTest(sequence: Bit[]) {
   steps.push({
     description:
       "Обчислимо статистику за формулою S = \\frac{|V_n-2*n*\\pi*(1-\\pi)|}{2*\\sqrt{2n}*\\pi*(1-\\pi)}",
-    value: statistic,
+    value: { type: "value", data: statistic },
   });
 
   const passed = statistic <= STATISTIC_LIMIT;
 
   steps.push({
     description: `Виконаємо перевірку S\\leq ${STATISTIC_LIMIT}`,
-    value: passed ? "Так" : "Ні",
+    value: { type: "value", data: passed ? "Так" : "Ні" },
   });
 
   return {
