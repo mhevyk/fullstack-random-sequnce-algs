@@ -2,20 +2,21 @@ import TeX from "@matejmazur/react-katex";
 
 type MathTextProps = {
   children: string;
-  options?: Record<string, any>;
+};
+
+const KATEX_SETTINGS = {
+  output: "mathml",
+  macros: { "*": "\\cdot" },
 };
 
 export function MathText({ children }: MathTextProps) {
   const block = children.includes("\\frac");
+
   return (
     <TeX
-      settings={{
-        output: "mathml",
-        macros: { " ": "\\:", "*": "\\cdot" },
-        strict: "unicodeTextInMathMode",
-      }}
+      settings={KATEX_SETTINGS}
       block={block}
-      className={block ? "math-block" : undefined}
+      className={block ? "math-block" : "math-inline"}
     >
       {children}
     </TeX>
